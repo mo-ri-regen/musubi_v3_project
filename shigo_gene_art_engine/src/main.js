@@ -27,7 +27,7 @@ const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = format.smoothing;
 var metadataList = [];
 var attributesList = [];
-var titleMain ="aaa";
+var titleMain = "aaa";
 var dnaList = new Set();
 const DNA_DELIMITER = "-";
 const HashlipsGiffer = require(`${basePath}/modules/HashlipsGiffer.js`);
@@ -128,7 +128,7 @@ const layersSetup = (layersOrder) => {
       layerObj.options?.["inTitle"] !== undefined
         ? layerObj.options?.["inTitle"]
         : false,
-      }));
+  }));
   return layers;
 };
 
@@ -195,13 +195,13 @@ const addMetadata = (_dna, _edition) => {
 
 const addAttributes = (_element) => {
   let selectedElement = _element.layer.selectedElement;
-  if( _element.layer.metadataHidden == false){
+  if (_element.layer.metadataHidden == false) {
     attributesList.push({
       trait_type: _element.layer.name,
       value: selectedElement.name,
     });
   }
-  if(_element.layer.inTitle == true){
+  if (_element.layer.inTitle == true) {
     titleMain = titleMain + selectedElement.name + " ";
   }
 };
@@ -250,15 +250,15 @@ const drawElement = (_renderObject, _index, _layersLen) => {
 const constructLayerToDna = (_dna = "", _layers = []) => {
   let mappedDnaToLayers = _layers.map((layer, index) => {
     let selectedElement;
-    layer.selectedId = cleanDna(_dna.split(DNA_DELIMITER)[index]) 
-    
-    if( layer.linkLayer == false && layer.fileName == false){
-      selectedElement = layer.elements.find( (e) => e.id == layer.selectedId);
-    }else if(layer.linkLayer != false){
+    layer.selectedId = cleanDna(_dna.split(DNA_DELIMITER)[index]);
+
+    if (layer.linkLayer == false && layer.fileName == false) {
+      selectedElement = layer.elements.find((e) => e.id == layer.selectedId);
+    } else if (layer.linkLayer != false) {
       selectedElement = layer.elements[_layers[layer.linkLayer].selectedId];
-    }else if(layer.fileName != false){
+    } else if (layer.fileName != false) {
       for (let i = 0; i < layer.elements.length; i++) {
-        if( layer.elements[i].name == layer.fileName ){
+        if (layer.elements[i].name == layer.fileName) {
           selectedElement = layer.elements[i];
         }
       }
@@ -398,16 +398,17 @@ const startCreating = async () => {
     ? console.log("Editions left to create: ", abstractedIndexes)
     : null;
   while (layerConfigIndex < layerConfigurations.length) {
-
     //config.jsを読む
-    const layers = layersSetup( layerConfigurations[layerConfigIndex].layersOrder );
+    const layers = layersSetup(
+      layerConfigurations[layerConfigIndex].layersOrder
+    );
 
     //画像を指定枚数生成するまでループ
-    while ( editionCount <= layerConfigurations[layerConfigIndex].growEditionSizeTo ) {
-
+    while (
+      editionCount <= layerConfigurations[layerConfigIndex].growEditionSizeTo
+    ) {
       let newDna = createDna(layers);
       if (isDnaUnique(dnaList, newDna)) {
-
         let results = constructLayerToDna(newDna, layers);
         let loadedElements = [];
 
